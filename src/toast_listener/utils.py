@@ -39,8 +39,9 @@ def parse_windows_event(xml_string):
 
 
 def parse_toast_raw_payload(xml_string):
-    print(xml_string)
     root = ElementTree.fromstring(xml_string)
+
+    launch_value = root.attrib.get('launch', "")
 
     visual = root.find('.//visual')
 
@@ -62,7 +63,8 @@ def parse_toast_raw_payload(xml_string):
             "title": title,
             "detail_desc": detail_desc
         },
-        "image": images
+        "image": images,
+        "launch": launch_value
     }
 
     return result

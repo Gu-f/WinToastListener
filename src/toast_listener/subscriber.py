@@ -120,4 +120,5 @@ class ToastListener(object):
         return {
             "texts": json_payload.get("text", {}),
             "images": b64_images,
+            "launch": json_payload.get("launch", ""),
         }
