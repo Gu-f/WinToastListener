@@ -21,8 +21,8 @@ class FetchToastPayload(object):
     def get_payload(self, trace_id) -> str:
         if not trace_id:
             return ""
-        params = ("toast", trace_id, "Notifications")
-        query = "SELECT `Payload` FROM `Notification` WHERE `Type` = ? AND `Id` = ? AND `Group` = ?"
+        params = ("toast", trace_id)
+        query = "SELECT `Payload` FROM `Notification` WHERE `Type` = ? AND `Id` = ?"
 
         self.cursor.execute(query, params)
         result = self.cursor.fetchone()

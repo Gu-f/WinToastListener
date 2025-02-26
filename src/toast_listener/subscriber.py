@@ -101,8 +101,11 @@ class ToastListener(object):
         return ""
 
     def parse_toast_payload(self, toast_row_payload: str) -> dict:
-        result = parse_toast_raw_payload(toast_row_payload)
-        return result
+        if toast_row_payload:
+            result = parse_toast_raw_payload(toast_row_payload)
+            return result
+        else:
+            return {}
 
     def extract_resource_file(self, json_payload: dict) -> dict:
         images = json_payload.get("image", [])
