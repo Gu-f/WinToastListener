@@ -1,12 +1,15 @@
 import base64
+import json
+import os.path
 from typing import Callable, Union
+from urllib.parse import urlparse
 
 import win32event
 import win32evtlog
 
 from .exception import ToastParserException, ToastEvtSubscribeActionError, ToastEvtSubscribeActionUnknown
 from .fetch_toast_payload import FetchToastPayload
-from .utils import parse_windows_event, parse_toast_raw_payload
+from .utils import parse_windows_event, parse_toast_raw_payload, parse_core_windows_event
 
 
 class ToastListener(object):
@@ -31,6 +34,9 @@ class ToastListener(object):
         self.fetch_toast_content = fetch_toast_content
         self.wpndatabase_path = wpndatabase_path
 
+    def parse_core_windows_event(self, event_data: str):
+        return parse_core_windows_event(event_data)
+
     def parse_windows_event(self, event_data: str):
         return parse_windows_event(event_data)
 
@@ -39,9 +45,9 @@ class ToastListener(object):
         if not app_id:
             return False
 
-        if app_id == '*':
+        if self.app_id == '*':
             return True
-        elif app_id == self.app_id:
+        elif self.app_id == app_id:
             return True
         else:
             return False
@@ -61,17 +67,18 @@ class ToastListener(object):
         if action == win32evtlog.EvtSubscribeActionDeliver:
             event_data = win32evtlog.EvtRender(event_handle, win32evtlog.EvtRenderEventXml)
             try:
-                event_json_data = self.parse_windows_event(event_data)
+                core_event_data = self.parse_core_windows_event(event_data)
+                event_data = self.parse_windows_event(event_data)
             except Exception as e:
                 raise ToastParserException(f"Toast xml parser exception - [{e}]")
-            filter_status = self.event_filter(event_json_data)
+            filter_status = self.event_filter(core_event_data)
             if filter_status:
-                resources = {}
+                json_payload = {}
                 if self.fetch_toast_content:
-                    toast_raw_content = self.get_toast_payload(event_json_data, wpndb)
+                    toast_raw_content = self.get_toast_payload(core_event_data, wpndb)
                     json_payload = self.parse_toast_payload(toast_raw_content)
-                    resources = self.extract_resource_file(json_payload)
-                self.callback(event_json_data, resources)
+                    self.extract_resource_file(json_payload)
+                self.callback(event_data, json_payload)
 
         elif action == win32evtlog.EvtSubscribeActionError:
             raise ToastEvtSubscribeActionError(f"Subscribe Action Error - [{action}] - [{event_handle}]")
@@ -107,18 +114,33 @@ class ToastListener(object):
         else:
             return {}
 
-    def extract_resource_file(self, json_payload: dict) -> dict:
-        images = json_payload.get("image", [])
-        b64_images = []
-        for img in images:
-            with open(img.get("image_src"), "rb") as image_file:
-                base64_img = base64.b64encode(image_file.read()).decode()
-            b64_images.append({
-                "image": base64_img,
-                "placement": img.get("placement"),
-            })
-        return {
-            "texts": json_payload.get("text", {}),
-            "images": b64_images,
-            "launch": json_payload.get("launch", ""),
-        }
+    def _is_local_path(self, path: str) -> bool:
+        return os.path.isabs(path) or os.path.exists(path)
+
+    def _is_url_path(self, path: str) -> bool:
+        parsed = urlparse(path)
+        return bool(parsed.scheme and parsed.netloc)
+
+    def extract_local_image(self, image_obj):
+        if isinstance(image_obj, list):
+            for image_info in image_obj:
+                image_src = image_info.get("@src", '')
+                if self._is_local_path(image_src):
+                    with open(image_src, "rb") as image_file:
+                        base64_img = base64.b64encode(image_file.read()).decode()
+                    image_info["@src"] = base64_img
+                    image_info["img_type"] = "base64"
+                elif self._is_url_path(image_src):
+                    image_info["img_type"] = "url"
+                else:
+                    image_info["img_type"] = "other"
+
+    def extract_resource_file(self, json_payload: dict) -> None:
+        """递归解析"""
+        for k, v in json_payload.items():
+            if k == "image":
+                self.extract_local_image(v)
+            if isinstance(v, dict):
+                self.extract_resource_file(v)
+            else:
+                continue

@@ -10,6 +10,7 @@ authors = [
 ]
 dependencies = [
     "pywin32~=308",
+    "xmltodict~=0.14.2",
 ]
 description = "A python library implemented by python3, for listening to Toast message notifications on windows."
 readme = "README_EN.md"
