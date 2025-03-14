@@ -37,4 +37,4 @@ listener.listen()
 [More examples](./examples)
 
 ## Document
-[Document]()
+[Document](https://github.com/Gu-f/WinToastListener/wiki/Document)  

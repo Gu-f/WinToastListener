@@ -37,4 +37,4 @@ listener.listen()
 [更多示例](./examples)
 
 ## 文档
-[文档]()
+[文档](https://github.com/Gu-f/WinToastListener/wiki/%E6%96%87%E6%A1%A3)  
