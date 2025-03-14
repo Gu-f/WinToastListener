@@ -2,7 +2,7 @@
 [README_EN](./README_EN.md)  
 一个用于监听Windows Toast通知消息的python库
 
-![Demo](./images/example.gif)  
+![Demo](https://github.com/Gu-f/WinToastListener/blob/main/images/example.gif)  
 
 ## 支持平台  
 **支持**  
@@ -37,4 +37,4 @@ listener.listen()
 [更多示例](./examples)
 
 ## 文档
-[文档](https://github.com/Gu-f/WinToastListener/wiki/%E6%96%87%E6%A1%A3)  
+[文档](https://github.com/Gu-f/WinToastListener/wiki/%E6%96%87%E6%A1%A3(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87))  

@@ -2,7 +2,7 @@
 [README_CN](./README.md)  
 A python library implemented by python3, for listening to Toast message notifications on windows.
 
-![Demo](./images/example.gif)  
+![Demo](https://github.com/Gu-f/WinToastListener/blob/main/images/example.gif)  
 
 ## Supported platforms  
 **Supported**  
@@ -37,4 +37,4 @@ listener.listen()
 [More examples](./examples)
 
 ## Document
-[Document](https://github.com/Gu-f/WinToastListener/wiki/Document)  
+[Document](https://github.com/Gu-f/WinToastListener/wiki/Document(English))  
