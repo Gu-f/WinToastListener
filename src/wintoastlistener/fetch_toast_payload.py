@@ -5,10 +5,10 @@ from .exception import ToastNotificationsDBNotExist
 
 
 class FetchToastPayload(object):
-    WPNDATABASE_PATH = os.path.expanduser(f"C:\\Users\\{os.environ.get('USERNAME')}\\AppData\\Local\\Microsoft\\Windows\\Notifications\\wpndatabase.db")
+    _WPNDATABASE_PATH = os.path.expanduser(f"C:\\Users\\{os.environ.get('USERNAME')}\\AppData\\Local\\Microsoft\\Windows\\Notifications\\wpndatabase.db")
 
     def __init__(self, wpndatabase_path=None):
-        self._wpndatabase = wpndatabase_path or self.WPNDATABASE_PATH
+        self._wpndatabase = wpndatabase_path or self._WPNDATABASE_PATH
         self.check_wpndatabase_path()
 
         conn = sqlite3.connect(self._wpndatabase)

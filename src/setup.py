@@ -16,7 +16,7 @@ setup(
     long_description=open('../README_EN.md', encoding="utf-8").read(),
     install_requires=[
         "pywin32 (>=308,==308.*)",
-        "pywin32 (>=0.14.2,==0.14.2.*)",
+        "xmltodict (>=0.14.2,==0.14.2.*)",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

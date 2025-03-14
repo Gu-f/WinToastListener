@@ -1,4 +1,6 @@
-from src.toast_listener.subscriber import ToastListener
+# 常规
+# Base Usage
+from wintoastlistener import ToastListener
 
 
 def example_callback(event_data, resources):
@@ -6,7 +8,5 @@ def example_callback(event_data, resources):
     print(resources)
 
 
-toast_listener = ToastListener(example_callback, app_id="MyToastTest")  # 获取Toast内容以及事件信息
-# toast_listener = ToastListener(example_callback, app_id="MyToastTest", fetch_toast_content=False)  # 只获取事件信息
-
-toast_listener.listen()
+listener = ToastListener(callback=example_callback)
+listener.listen()

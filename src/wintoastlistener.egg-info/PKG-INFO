@@ -1,0 +1,21 @@
+Metadata-Version: 2.2
+Name: wintoastlistener
+Version: 1.0.0
+Summary: A python library implemented by python3, for listening to Toast message notifications on windows.
+Author: Gu-f
+Project-URL: Homepage, https://github.com/Gu-f/WinToastListener
+Project-URL: Bug Tracker, https://github.com/Gu-f/WinToastListener/issues
+Platform: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows 10
+Classifier: Operating System :: Microsoft :: Windows 11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pywin32==308.*,>=308
+Requires-Dist: xmltodict==0.14.2.*,>=0.14.2
+
+# WinToastListener
+A python library implemented by python3, for listening to Toast message notifications on windows.
+  

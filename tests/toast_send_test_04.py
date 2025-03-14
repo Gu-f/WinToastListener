@@ -1,3 +1,8 @@
+# pip install win11toast
+
+# 更复杂的Toast示例
+# A more complex Toast example
+
 from win11toast import toast
 from pathlib import Path
 
